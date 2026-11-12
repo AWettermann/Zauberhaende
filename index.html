@@ -1,0 +1,260 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Zauberhände V3.6 · Oranienschule</title><style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;font-family:system-ui,-apple-system,sans-serif;color:#20375c;background:#fff7ec}button{font:inherit;cursor:pointer}#landing{position:fixed;inset:0;z-index:5;display:grid;place-items:center;padding:12px;background:linear-gradient(125deg,#fff0d5,#e5f6ff 65%,#f4e5ff)}#landing img{width:min(100%,1400px);max-height:96vh;object-fit:contain;filter:drop-shadow(0 8px 18px #7283a52c)}#launch{position:absolute;left:50%;top:87%;transform:translate(-50%,-50%);padding:clamp(10px,1.6vw,22px) clamp(22px,4vw,60px);background:linear-gradient(130deg,#ffb225,#f66d22);color:white;font-size:clamp(18px,2.5vw,32px);font-weight:900;border:3px solid #fff6e7;border-radius:60px;box-shadow:0 8px 0 #b95620,0 14px 30px #e5854477;white-space:nowrap}#game{display:none;position:fixed;inset:0;background:#141348 url("zauberwelt.svg") center/cover no-repeat}body.playing #landing{display:none}body.playing #game{display:block}#video,#effects{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}#video{transform:scaleX(-1);filter:none;opacity:0;transform:scaleX(-1)}#sharpHands{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}#effects{z-index:2}#effects{pointer-events:none}#top{position:absolute;z-index:4;top:12px;left:12px;right:12px;display:flex;align-items:flex-start;justify-content:space-between;gap:8px;pointer-events:none}.pill{background:#fff9eeed;border:2px solid #ffd18a;color:#20375c;border-radius:20px;padding:10px 15px;box-shadow:0 4px 18px #18385a33;font-weight:750}#status{font-size:clamp(14px,2vw,22px)}#home{pointer-events:auto;border:0;border-radius:22px;background:#fff9eeef;color:#24426b;padding:10px 15px;font-weight:800}#bottom{position:absolute;z-index:4;bottom:14px;left:50%;transform:translateX(-50%);width:max-content;max-width:94vw;text-align:center;background:#fff9eeec;border:2px solid #ffcb85;border-radius:24px;padding:9px 16px;font-weight:750;font-size:clamp(12px,1.5vw,18px)}#error{display:none;position:absolute;z-index:4;top:50%;left:50%;transform:translate(-50%,-50%);width:min(90vw,560px);background:#fff9ee;border:3px solid #ffb46e;border-radius:24px;padding:24px;text-align:center;box-shadow:0 12px 60px #20375c55}#error button{background:#f98528;border:0;color:white;border-radius:18px;padding:12px 25px;font-weight:800}#welcome{display:none;position:absolute;z-index:3;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;background:#fff9e9ee;border:4px solid #ffcf74;border-radius:30px;padding:clamp(18px,4vw,48px);width:min(86vw,700px);box-shadow:0 0 90px #ffc46d;pointer-events:none}#welcome strong{display:block;font-size:clamp(25px,5vw,52px);color:#e16e23}#welcome span{font-size:clamp(18px,2.6vw,27px)}@media(max-width:650px){#landing img{width:100%;max-height:88vh}#launch{top:87%}#top{top:7px;left:7px;right:7px}.pill{padding:8px 10px}#bottom{bottom:7px}}
+#finale{display:none;position:fixed;inset:0;z-index:20;background:#fff4dc;align-items:center;justify-content:center}#finale.visible{display:flex}#finale img{width:100%;height:100%;object-fit:contain}#again{position:absolute;left:50%;bottom:3%;transform:translateX(-50%);border:3px solid white;border-radius:50px;background:linear-gradient(120deg,#ffb42a,#f36b20);color:white;font-weight:900;font-size:clamp(16px,2.3vw,27px);padding:12px 28px;box-shadow:0 6px 20px #a85e5480;white-space:nowrap}#landing img{max-height:100vh}#launch{top:auto;bottom:3%;transform:translateX( -50% );background:linear-gradient(130deg,#ffb225,#f66d22);border:3px solid #fff6e7;box-shadow:0 8px 0 #b95620,0 14px 30px #e5854477;color:white;width:auto;height:auto;font-size:clamp(18px,2.5vw,30px);z-index:10}#launch:focus-visible{outline:4px solid #fa851e;outline-offset:4px}@media(max-width:700px){#launch{bottom:4%;width:auto;height:auto;max-width:90vw}} </style></head><body><section id="landing"><img src="startbild.png" alt="Zauberhände – magische Fantasiewelt mit Schmetterlingen, Regenbogen, Drache, Schloss und zwei Händen"><button id="launch">✨ Jetzt zaubern!</button></section><!-- Kamera läuft lokal im Browser; das Videobild wird nicht als Hintergrund angezeigt. Die Handmaske kann Bildteile außerhalb der Hände enthalten. -->
+<section id="game"><video id="video" autoplay muted playsinline></video><canvas id="sharpHands"></canvas><canvas id="effects"></canvas><div id="top"><div class="pill" id="status" aria-live="polite">✨ Zeige deine Hände!</div><button id="home">⌂ Startseite</button></div><div id="bottom">✨ Halte eine Hand gut sichtbar vor die Kamera. <button id="helpToggle" style="border:0;background:#ffb12b;color:#20375c;border-radius:15px;padding:5px 10px;font-weight:800">Handzeichen & Diagnose</button><div id="diagnostic" style="display:none;font-size:14px;line-height:1.5;text-align:left;max-width:540px;margin:8px auto 0"></div></div><div id="welcome"><div style="font-size:65px">🫶✨🏫</div><strong>Willkommen an der Oranienschule!</strong><span>Du hast alle Hände voller Magie!</span></div><div id="error"><h2>Die Magie braucht deine Kamera</h2><p id="errorText"></p><button id="retry">Erneut versuchen</button></div></section><section id="finale"><img src="abschlussbild.png" alt="Willkommen an der Oranienschule!"><button id="again">✨ Noch einmal zaubern!</button></section>
+<script>
+'use strict';
+const $=id=>document.getElementById(id),video=$('video'),canvas=$('effects'),ctx=canvas.getContext('2d'),input=document.createElement('canvas'),ic=input.getContext('2d',{willReadFrequently:true}),sharp=$('sharpHands'),sc=sharp.getContext('2d'),handMask=document.createElement('canvas'),mc=handMask.getContext('2d');
+let heartEvidence=0,heartEvidenceAt=0,heartLastSample=0,heartTriggered=false;let launchAt=0,launchOrigin=null,releaseBursts=0;let stream=null,hands=null,playing=false,busy=false,landmarks=[],particles=[],butterflies=[],gesture='none',candidate='none',candidateAt=0,lastFrame=0,lastSend=0,lastSpark=0,lastHeart=0,heartUntil=0,frames=0,hasResult=false,loopId=0,heartHold=0,lastHeartSeen=0,previousPalm=null,starLast=null;
+const CDN='https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4/';
+let lastDetectionAt=0, lastDetectionError='', showHelp=false;
+const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);const rand=(a,b)=>a+Math.random()*(b-a);
+function resize(){const d=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(innerWidth*d);canvas.height=Math.round(innerHeight*d);ctx.setTransform(d,0,0,d,0,0);sharp.width=Math.round(innerWidth);sharp.height=Math.round(innerHeight);handMask.width=sharp.width;handMask.height=sharp.height}addEventListener('resize',resize);
+function pt(p){
+ // MediaPipe-Koordinaten auf das gespiegelte, mit object-fit:cover beschnittene Kamerabild übertragen.
+ const vw=video.videoWidth||640,vh=video.videoHeight||360,scale=Math.max(innerWidth/vw,innerHeight/vh);
+ const w=vw*scale,h=vh*scale;
+ return {x:(innerWidth-w)/2+(1-p.x)*w,y:(innerHeight-h)/2+p.y*h};
+}
+function drawMirrorCover(c){
+ const vw=video.videoWidth||640,vh=video.videoHeight||360,scale=Math.max(innerWidth/vw,innerHeight/vh),w=vw*scale,h=vh*scale;
+ c.save();c.translate(innerWidth,0);c.scale(-1,1);c.drawImage(video,(innerWidth-w)/2,(innerHeight-h)/2,w,h);c.restore();
+}
+function paintSharpHands(){
+ sc.clearRect(0,0,sharp.width,sharp.height);
+ if(video.readyState<2||!landmarks.length)return;
+ mc.clearRect(0,0,handMask.width,handMask.height);
+ // Handfläche und einzelne Finger als weiche, zusammenhängende Maske.
+ mc.fillStyle='#fff';mc.strokeStyle='#fff';mc.lineCap='round';mc.lineJoin='round';
+ for(const h of landmarks){
+   const a=h.map(pt),pw=Math.hypot(a[5].x-a[17].x,a[5].y-a[17].y);
+   // Breite Handfläche und natürlich breite Finger statt dünner Linien.
+   const thick=Math.max(22,Math.min(62,pw*.34));
+   mc.beginPath();[0,1,2,5,9,13,17,0].forEach((idx,i)=>{if(i===0)mc.moveTo(a[idx].x,a[idx].y);else mc.lineTo(a[idx].x,a[idx].y)});mc.closePath();mc.lineWidth=thick*.90;mc.fill();mc.stroke();
+   for(const chain of [[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16],[17,18,19,20]]){
+     mc.beginPath();chain.forEach((idx,i)=>{if(i===0)mc.moveTo(a[idx].x,a[idx].y);else mc.lineTo(a[idx].x,a[idx].y)});
+     mc.lineWidth=thick*(chain[0]===1?1.12:chain[0]===5?0.88:chain[0]===17?0.83:0.94);mc.stroke();
+   }
+   // Übergang zum Unterarm: Handgelenk wird weich verbreitert.
+   mc.beginPath();mc.arc(a[0].x,a[0].y,thick*.74,0,Math.PI*2);mc.fill();
+
+ }
+ // Die Kamera wird ausschließlich innerhalb der Handmaske gezeichnet.
+ // Der restliche Videoframe wird NICHT angezeigt.
+ // Hinweis: Die Handmaske ist geometrisch angenähert und keine echte Pixel-Segmentierung.
+ // Eine kleine Randweichzeichnung verhindert harte Konturen.
+ sc.save();drawMirrorCover(sc);sc.globalCompositeOperation='destination-in';sc.filter='blur(2px)';sc.drawImage(handMask,0,0);sc.restore();
+}
+
+// Fingerstellung über Gelenkwinkel und Abstände statt nur Abstand zum Handgelenk.
+function angle(a,b,c){const ux=a.x-b.x,uy=a.y-b.y,vx=c.x-b.x,vy=c.y-b.y;return Math.acos(clamp((ux*vx+uy*vy)/(Math.hypot(ux,uy)*Math.hypot(vx,vy)+1e-8),-1,1))*180/Math.PI}
+function extended(h,tip,pip,mcp){return angle(h[mcp],h[pip],h[tip])>145 && dist(h[tip],h[mcp])>dist(h[pip],h[mcp])*1.13}
+function fingers(h){return [extended(h,8,6,5),extended(h,12,10,9),extended(h,16,14,13),extended(h,20,18,17)]}
+function open(h){return fingers(h).filter(Boolean).length>=3}
+function one(h){const f=fingers(h);return f[0]&&!f[1]&&!f[2]&&!f[3]}
+function heartShape(a,b){
+ // Zwei Hände bilden ein Herz: Zeigefingerspitzen oben nahe beieinander,
+ // Daumenspitzen unten nahe beieinander. Die Finger dürfen leicht gebeugt sein.
+ const scale=(dist(a[0],a[9])+dist(b[0],b[9]))/2;
+ if(scale<.028)return false;
+ const indexGap=dist(a[8],b[8])/scale;
+ const thumbGap=dist(a[4],b[4])/scale;
+ const centerGap=dist(a[9],b[9])/scale;
+ const opening=(dist(a[8],a[4])+dist(b[8],b[4]))/(2*scale);
+ // Verhindert, dass bloß zwei geschlossene Hände ein Herz auslösen.
+ return indexGap<1.85 && thumbGap<1.9 && centerGap>.35 && centerGap<5.6 && opening>.48;
+}
+
+function thumbUp(h){
+ const f=fingers(h),palm=dist(h[0],h[9]);
+ // Daumen deutlich vom Zeigefingergrundgelenk entfernt, übrige vier Finger geschlossen.
+ const thumbLong=dist(h[4],h[2])>palm*.54;
+ const separated=dist(h[4],h[5])>palm*.65;
+ const folded=f.filter(Boolean).length<=1 && !f[0];
+ return folded && thumbLong && separated && dist(h[4],h[0])>dist(h[3],h[0])*1.12;
+}
+function pinch(h){return dist(h[4],h[8])<dist(h[0],h[9])*.42}
+function okSign(h){const f=fingers(h);return pinch(h)&&f[1]&&f[2]&&f[3]}
+function countFingers(h){return fingers(h).filter(Boolean).length}
+function rawGesture(){
+ if(landmarks.length>=2){
+  if(heartShape(landmarks[0],landmarks[1]))return 'heart';
+  if(landmarks.every(open))return 'galaxy';
+ }
+ const h=landmarks[0];if(!h)return 'none';
+ const f=fingers(h),n=countFingers(h);
+ // Eindeutige Reihenfolge: spezielle Zeichen vor allgemeiner Fingeranzahl.
+ if(okSign(h))return 'bubbles';
+ if(thumbUp(h))return 'dragon';
+ if(pinch(h)&&n<3)return 'crystal';
+ if(f[0]&&!f[1]&&!f[2]&&f[3])return 'music';
+ if(n===0)return 'energy';
+ if(n===4)return 'butterfly';
+ if(n===3)return 'fireworks';
+ if(n===2&&f[0]&&f[1])return 'rainbow';
+ if(n===2)return 'ice';
+ if(n===1&&f[0])return 'stars';
+ if(n===1)return 'ice';
+ return 'none';
+}
+// 12 Aktionen: Sterne, Regenbogen, Feuerwerk, Schmetterlinge, Energie, Kristall, Drache, Galaxie, Eis, Blasen, Musik, Herz.
+const names={stars:'⭐ Sternenzauber',rainbow:'🌈 Regenbogenzauber',fireworks:'🎆 Feuerwerk',butterfly:'🦋 Schmetterlingszauber',energy:'🔮 Energiekugel',crystal:'💎 Kristallzauber',dragon:'🐉 Zauberdrache',galaxy:'🌌 Galaxie',ice:'❄️ Eiszauber',bubbles:'🫧 Seifenblasen',music:'🎵 Musikzauber',heart:'🫶 Herzmagie',none:'✨ Probiere ein Handzeichen!'};
+function stabilize(now){const raw=rawGesture();if(raw!==candidate){candidate=raw;candidateAt=now}const delay=raw==='heart'?140:raw==='none'?360:190;if(raw!==gesture&&now-candidateAt>delay){const previous=gesture;gesture=raw;starLast=null;heartHold=0;launchAt=now;launchOrigin=null;if(previous==='energy'&&raw==='butterfly')releaseBursts=now+1000;$('status').textContent=names[raw]}}
+function sparkle(x,y,count=3,color='#ffcd43',power=1){for(let i=0;i<count;i++){const angle=rand(0,Math.PI*2),speed=rand(1,5)*power;particles.push({x,y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed-.5,life:rand(30,65),max:65,size:rand(2,7),color})}if(particles.length>900)particles.splice(0,particles.length-900)}
+function star(x,y,r){ctx.save();ctx.translate(x,y);ctx.shadowColor='#ffc400';ctx.shadowBlur=22;ctx.fillStyle='#ffcf2c';ctx.strokeStyle='#fff8d8';ctx.lineWidth=2.5;ctx.beginPath();for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,v=i%2?r*.42:r;const px=Math.cos(a)*v,py=Math.sin(a)*v;i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.closePath();ctx.fill();ctx.stroke();ctx.restore()}
+// Zwölf eigenständige Schmetterlingsvarianten: Farbe, Zeichnung, Größe und Flugverhalten.
+const butterflyStyles=[
+ ['#20d5ff','#3449d9','#fff5aa',0],['#ff8bcb','#a638a6','#fff2fa',1],
+ ['#ffd64b','#ff7a28','#fffbe0',2],['#84f16e','#148d81','#f5ffbb',3],
+ ['#a98aff','#5533ba','#e9dbff',0],['#ff7771','#e83b79','#fff3b0',1],
+ ['#6ee5df','#237ac8','#ffffff',2],['#ffe36d','#ac5dd9','#fff3d4',3],
+ ['#f4a2f4','#7e4acf','#fff5ff',0],['#a5dc5b','#418d42','#fff8ae',1],
+ ['#ffb36a','#e34d6a','#ffedcd',2],['#9bc6ff','#3671b9','#f3f9ff',3]
+];
+// Flügelformen und sanfte Lichtverläufe nach dem ursprünglichen Schmetterling aus V2.2.
+function butterfly(x,y,s,t,variant=0){
+ // Flügel nach oben: angelehnt an die ursprüngliche V2.3-Form,
+ // mit breiten oberen Flügeln, sichtbaren Adern und weich leuchtenden Rändern.
+ const palette=[['#56e5ff','#383bd0'],['#ff9bd9','#c23a99'],['#ffe37b','#f77b24'],['#94f6d4','#178d9f'],['#c9b2ff','#6642c5'],['#ff9a91','#d74779'],['#ffcd7d','#e36e32'],['#75d7ff','#2859d6'],['#b8f588','#368f61'],['#f7aaf7','#9942b0'],['#ffc2a4','#db5074'],['#a8d5ff','#436cc6']];
+ const [mid,edge]=palette[variant%palette.length];
+ const flap=.18+.82*Math.abs(Math.cos(t*.011+variant*.45));
+ ctx.save();ctx.translate(x,y);ctx.rotate(Math.sin(t*.0014+variant)*.16);ctx.shadowColor=mid;ctx.shadowBlur=17;
+ for(const side of [-1,1]){
+   ctx.save();ctx.scale(side*flap,1);
+   const grad=ctx.createLinearGradient(0,-s*.65,s*.74,s*.12);
+   grad.addColorStop(0,'#fffde3');grad.addColorStop(.35,mid);grad.addColorStop(1,edge);
+   ctx.fillStyle=grad;ctx.strokeStyle=edge;ctx.lineWidth=Math.max(1.8,s*.017);
+   ctx.beginPath();ctx.moveTo(0,-s*.08);
+   ctx.bezierCurveTo(s*.13,-s*1.22,s*.92,-s*1.24,s*.92,-s*.40);
+   ctx.bezierCurveTo(s*.94,-s*.03,s*.24,s*.12,0,s*.12);ctx.closePath();ctx.fill();ctx.stroke();
+   ctx.beginPath();ctx.moveTo(0,s*.04);
+   ctx.bezierCurveTo(s*.54,-s*.10,s*.75,s*.40,s*.45,s*.54);
+   ctx.bezierCurveTo(s*.17,s*.63,s*.05,s*.24,0,s*.12);ctx.closePath();ctx.fill();ctx.stroke();
+   ctx.strokeStyle='rgba(255,255,255,.58)';ctx.lineWidth=Math.max(1,s*.009);
+   for(let k=0;k<4;k++){ctx.beginPath();ctx.moveTo(s*.06,-s*.03);ctx.quadraticCurveTo(s*(.26+k*.09),-s*(.30+k*.12),s*(.35+k*.12),-s*(.54+k*.08));ctx.stroke()}
+   // Feine, organische Flügeladern und kontrastreiche Augenflecken.
+   ctx.strokeStyle='rgba(36,30,77,.36)';ctx.lineWidth=Math.max(.8,s*.008);
+   for(let v=0;v<5;v++){ctx.beginPath();ctx.moveTo(s*.07,-s*.08);ctx.quadraticCurveTo(s*(.27+v*.10),-s*(.34+v*.11),s*(.40+v*.10),-s*(.50+v*.10));ctx.stroke()}
+   ctx.fillStyle='rgba(20,24,74,.72)';ctx.beginPath();ctx.ellipse(s*.64,-s*.49,s*.105,s*.13,-.25,0,7);ctx.fill();
+   ctx.fillStyle='#fff7bd';ctx.beginPath();ctx.ellipse(s*.65,-s*.50,s*.060,s*.075,-.25,0,7);ctx.fill();
+   ctx.fillStyle='#fff9de';for(let k=0;k<6;k++){ctx.beginPath();ctx.arc(s*(.37+k*.085),-s*(.64+k*.075),s*.033,0,Math.PI*2);ctx.fill()}ctx.strokeStyle='rgba(255,255,255,.72)';ctx.lineWidth=s*.015;ctx.beginPath();ctx.moveTo(s*.13,-s*.14);ctx.quadraticCurveTo(s*.44,-s*.63,s*.69,-s*.77);ctx.stroke()
+   ctx.restore();
+ }
+ ctx.shadowBlur=5;ctx.strokeStyle='#27254c';ctx.lineWidth=Math.max(2.8,s*.028);ctx.lineCap='round';
+ ctx.beginPath();ctx.moveTo(0,-s*.26);ctx.quadraticCurveTo(s*.015,s*.04,0,s*.34);ctx.stroke();
+ ctx.lineWidth=Math.max(1.3,s*.011);ctx.beginPath();ctx.moveTo(0,-s*.24);ctx.quadraticCurveTo(-s*.16,-s*.53,-s*.23,-s*.46);ctx.moveTo(0,-s*.24);ctx.quadraticCurveTo(s*.16,-s*.53,s*.23,-s*.46);ctx.stroke();ctx.restore();
+}
+function glowText(symbol,x,y,size,shadow='#fff'){ctx.save();ctx.font=`${size}px system-ui,Apple Color Emoji,Segoe UI Emoji`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.shadowColor=shadow;ctx.shadowBlur=28;ctx.fillText(symbol,x,y);ctx.restore()}
+function heartPath(x,y,w,h){
+ ctx.beginPath();ctx.moveTo(x,y+h*.43);
+ ctx.bezierCurveTo(x-w*.96,y-h*.10,x-w*.54,y-h*.82,x,y-h*.34);
+ ctx.bezierCurveTo(x+w*.54,y-h*.82,x+w*.96,y-h*.10,x,y+h*.43);
+}
+function heart(x,y,s,t){
+ const pulse=1+.055*Math.sin(t*.005);
+ ctx.save();ctx.translate(x,y);ctx.scale(pulse,pulse);
+ // Ein großes, transparentes Herz außerhalb der Hände und ein kleineres im Inneren.
+ for(const [size,alpha] of [[s*1.65,.86],[s*.66,1]]){
+  for(let layer=4;layer>=0;layer--){
+   ctx.save();ctx.globalAlpha=alpha*(layer===0?1:.16);ctx.strokeStyle=layer===0?'#fff6c7':layer%2?'#ff4fbd':'#ffb5f4';
+   ctx.lineWidth=layer===0?Math.max(4,size*.035):Math.max(8,size*(.06+layer*.028));
+   ctx.shadowColor=layer%2?'#ff36ac':'#ffe16b';ctx.shadowBlur=30+layer*17;
+   heartPath(0,0,size,size*.97);ctx.stroke();ctx.restore();
+  }
+ }
+ const glow=ctx.createRadialGradient(0,0,0,0,0,s*.66);glow.addColorStop(0,'rgba(255,255,225,.82)');glow.addColorStop(.25,'rgba(255,206,115,.43)');glow.addColorStop(1,'rgba(255,74,173,0)');
+ ctx.fillStyle=glow;ctx.beginPath();ctx.arc(0,0,s*.66,0,Math.PI*2);ctx.fill();
+ for(let i=0;i<26;i++){const a=i/26*Math.PI*2+t*.00038;const xx=Math.cos(a)*s*.88,yy=Math.sin(a)*s*.72;
+ ctx.globalAlpha=.35+.55*Math.abs(Math.sin(t*.003+i));ctx.fillStyle=i%3===0?'#ffffff':'#ffe3a0';
+ ctx.beginPath();ctx.arc(xx,yy,1.4+i%3,0,7);ctx.fill()}ctx.restore();
+}
+const dragonArt=new Image();dragonArt.src='zauberdrache.svg';const castleArt=new Image();castleArt.src='maerchenschloss.svg';
+function render(now){if(!playing)return;ctx.clearRect(0,0,innerWidth,innerHeight);const dt=Math.min(2.4,(now-lastFrame)/16.67||1);lastFrame=now;paintSharpHands();stabilize(now);if(showHelp){$('diagnostic').textContent='Kamera: '+(video.readyState>=2?'bereit':'wartet')+' · Erkennung: '+(hasResult?'aktiv':'wartet')+' · Hände: '+landmarks.length+' · Finger: '+(landmarks[0]?countFingers(landmarks[0]):'–')+' · Geste: '+(names[gesture]||gesture)+(lastDetectionError?' · Fehler: '+lastDetectionError:'')+' | 1 Finger: Sterne · 2: Eis/Regenbogen · 3: Feuerwerk · 4: Schmetterlinge · Faust: Energie · Daumen hoch: Drache · beide Hände offen: Galaxie · Herz mit zwei Händen: Abschluss';}
+ if(gesture==='stars'){for(const h of landmarks.filter(one)){const p=pt(h[8]);star(p.x,p.y,34+Math.sin(now*.012)*7);
+ if(starLast){const d=Math.hypot(p.x-starLast.x,p.y-starLast.y);const n=Math.min(14,Math.floor(d/12));for(let i=0;i<n;i++){const q=(i+1)/(n+1);sparkle(starLast.x+(p.x-starLast.x)*q,starLast.y+(p.y-starLast.y)*q,2,'#ffda54',.8)}}starLast=p;
+ if(now-lastSpark>25)sparkle(p.x,p.y,6,'#ffda54',1.5)}if(now-lastSpark>25)lastSpark=now}
+ const h=landmarks[0],p=h?pt(h[9]):null;
+ if(gesture==='butterfly'&&p){const elapsed=(now-launchAt)/1000;for(let i=0;i<12;i++){
+ // Die Schmetterlinge starten aus der Handfläche und fliegen allmählich nach oben und außen.
+ const delay=i*.16,age=Math.max(0,elapsed-delay);if(elapsed<delay)continue;const flyAge=Math.min(age,5.5);
+ const theta=i*2.39996,spread=Math.min(1,age/1.5),drift=spread*(85+(i%4)*44),x=p.x+Math.sin(theta)*drift+Math.sin(now*.0014+i)*28,y=p.y-35-flyAge*(19+(i%3)*6)+Math.cos(theta)*drift*.4;
+ butterfly(x,y,i===0?Math.min(155,innerWidth*.16):Math.min(92+(i%5)*10,innerWidth*.12),now,i)}if(now-lastSpark>110){sparkle(p.x,p.y-35,3,'#a8e8ff',.7);lastSpark=now}}
+ if(p){const t=now*.001;switch(gesture){
+ case 'rainbow':{
+  // Fantasie-Regenbogen: breite Lichtbänder, schimmernde Doppelkontur,
+  // wandernde Lichtpunkte und ein kleines schwebendes Märchenschloss.
+  const a=pt(h[8]),b=pt(h[12]);
+  const cx=clamp((a.x+b.x)/2,innerWidth*.18,innerWidth*.82);
+  const cy=clamp((a.y+b.y)/2+innerHeight*.25,innerHeight*.42,innerHeight*.94);
+  const r=Math.min(innerWidth*.54,innerHeight*.83,720);
+  const colors=['#ff4866','#ff9b39','#fff06a','#57ed95','#3ddff3','#547cff','#c57aff'];
+  ctx.save();ctx.lineCap='round';ctx.globalCompositeOperation='screen';
+  for(let j=0;j<7;j++){
+   const radius=r-j*Math.max(9,r*.044),thick=Math.max(12,r*.052);
+   const start=Math.PI*1.045,end=Math.PI*1.955;
+   ctx.beginPath();ctx.arc(cx,cy,radius,start,end);
+   ctx.lineWidth=thick*1.9;ctx.strokeStyle=colors[j];ctx.globalAlpha=.17;ctx.shadowColor=colors[j];ctx.shadowBlur=35;ctx.stroke();
+   ctx.beginPath();ctx.arc(cx,cy,radius,start,end);ctx.lineWidth=thick;ctx.globalAlpha=.91;ctx.shadowBlur=18;ctx.stroke();
+   ctx.beginPath();ctx.arc(cx,cy,radius-thick*.22,start,end);ctx.lineWidth=2.4;ctx.strokeStyle='#ffffff';ctx.globalAlpha=.43;ctx.shadowBlur=12;ctx.stroke();ctx.strokeStyle=colors[j];
+  }
+  ctx.globalAlpha=1;ctx.shadowBlur=24;
+  for(let k=0;k<64;k++){
+   const j=k%7,angle=Math.PI*(1.05+.90*((k/64+now*.000075*(1+j*.1))%1));
+   const rad=r-j*Math.max(9,r*.044);const x=cx+Math.cos(angle)*rad,y=cy+Math.sin(angle)*rad;
+   const sz=1.5+3*Math.abs(Math.sin(now*.002+k*5));
+   ctx.fillStyle=k%3?'#fff4c8':'#ffffff';ctx.beginPath();ctx.arc(x,y,sz,0,7);ctx.fill();
+  }
+  ctx.restore();
+  // Das Schloss erscheint nach kurzem Halten der Geste, ohne den Regenbogen zu verdecken.
+  const age=now-launchAt;if(age>850){
+   const castleSize=Math.min(190,Math.max(95,r*.39));
+   const bx=clamp(cx+r*.57,castleSize*.5+8,innerWidth-castleSize*.5-8);
+   const by=clamp(cy-r*.82+Math.sin(now*.0018)*8,castleSize*.56,innerHeight-castleSize*.6);
+   ctx.save();ctx.globalAlpha=Math.min(.96,(age-850)/650);ctx.shadowColor='#ffdb93';ctx.shadowBlur=30;
+   if(castleArt.complete&&castleArt.naturalWidth)ctx.drawImage(castleArt,bx-castleSize*.5,by-castleSize*.55,castleSize,castleSize);
+   ctx.restore();
+  }
+  if(now-lastSpark>85){sparkle(cx+rand(-r,r),cy-rand(r*.25,r*.95),6,'#fff4c6',1.1);lastSpark=now}break}
+ case 'fireworks':if(now-lastSpark>250){for(let i=0;i<5;i++)sparkle(p.x+rand(-140,140),p.y+rand(-160,30),36,['#f8c','#5df','#ff5','#9f8'][i%4],3);lastSpark=now}break;
+ case 'energy':{const r=38+Math.sin(t*5)*7;const g=ctx.createRadialGradient(p.x,p.y,4,p.x,p.y,r);g.addColorStop(0,'#fff');g.addColorStop(.4,'#f4c7ff');g.addColorStop(1,'#7524d800');ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,r,0,7);ctx.fill();break}
+ case 'crystal':glowText('💎',pt(h[8]).x,pt(h[8]).y-38,65,'#65dbff');break;
+ case 'dragon':{const size=Math.min(innerWidth*.48,410),dx=clamp(p.x-size*.5,5,innerWidth-size-5),dy=clamp(p.y-size*.95+Math.sin(t*3)*10,8,innerHeight-size-8);ctx.save();ctx.shadowColor='#ff9e2e';ctx.shadowBlur=32;if(dragonArt.complete&&dragonArt.naturalWidth)ctx.drawImage(dragonArt,dx,dy+Math.sin(t*2.3)*6,size,size);else glowText('🐉',p.x,p.y-110,170,'#ffb63b');ctx.restore();if(now-lastSpark>75){sparkle(dx+size*.86,dy+size*.40,10,'#ffbc52',1.5);sparkle(dx+size*.89+rand(-18,18),dy+size*.42+rand(-16,16),5,'#ffeb99',1);lastSpark=now}break}
+ case 'ice':{glowText('❄️',p.x,p.y-60,72,'#8fefff');if(now-lastSpark>75){sparkle(p.x+rand(-100,100),p.y+rand(-120,30),5,'#b8faff',1);lastSpark=now}break}
+ case 'bubbles':{for(let i=0;i<14;i++){const x=p.x+Math.sin(t*.7+i*1.7)*(30+i*5),y=p.y-((t*36+i*39)%360);ctx.strokeStyle=`hsla(${190+i*16},90%,75%,.8)`;ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,8+(i%4)*5,0,7);ctx.stroke()}break}
+ case 'music':{
+  for(let i=0;i<10;i++){
+    const nx=p.x+Math.sin(i*2.2+t*.8)*Math.min(180,innerWidth*.19),ny=p.y-((t*50+i*53)%Math.min(480,innerHeight*.9));
+    const size=25+(i%4)*7;ctx.save();ctx.translate(nx,ny);ctx.rotate(Math.sin(t+i)*.16);
+    ctx.globalAlpha=.78+.2*Math.sin(t*2+i)**2;ctx.strokeStyle=i%3===0?'#b5faff':i%3===1?'#ffdc7a':'#ffa6ec';
+    ctx.fillStyle=ctx.strokeStyle;ctx.lineWidth=5;ctx.lineCap='round';ctx.shadowColor=ctx.strokeStyle;ctx.shadowBlur=22;
+    ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(0,-size);ctx.quadraticCurveTo(size*.48,-size*.88,size*.50,-size*.65);ctx.stroke();
+    ctx.beginPath();ctx.ellipse(-size*.23,2,size*.26,size*.16,-.35,0,Math.PI*2);ctx.fill();ctx.restore();
+  }break} 
+ }}
+ if(gesture==='galaxy'&&landmarks.length>1){const q=pt(landmarks[1][9]),cx=(p.x+q.x)/2,cy=(p.y+q.y)/2,r=Math.max(45,Math.hypot(p.x-q.x,p.y-q.y)/2);for(let i=0;i<110;i++){const a=i*2.4+now*.0005,rad=Math.sqrt(i/110)*r*1.4;ctx.fillStyle=['#fff','#b6baff','#ffd0f4','#6eeaff'][i%4];ctx.beginPath();ctx.arc(cx+Math.cos(a)*rad,cy+Math.sin(a)*rad*.5,1+i%3,0,7);ctx.fill()}glowText('🌌',cx,cy,Math.min(120,r*1.2))}
+ // Herz wird über mehrere Erkennungsbilder gesammelt; kurze Aussetzer zählen nicht als Neustart.
+ const heartSeen=landmarks.length>=2 && heartShape(landmarks[0],landmarks[1]);
+ const elapsed=heartLastSample?Math.min(100,now-heartLastSample):16;
+ heartLastSample=now;
+ if(heartSeen){heartEvidence=Math.min(1100,heartEvidence+elapsed);heartEvidenceAt=now;}
+ else if(now-heartEvidenceAt>750){heartEvidence=Math.max(0,heartEvidence-elapsed*1.8);}
+ const heartActive=heartSeen || (heartEvidence>100 && now-heartEvidenceAt<750);
+ if(heartActive&&landmarks.length>=2){
+  const a=pt(landmarks[0][9]),b=pt(landmarks[1][9]);
+  const x=(a.x+b.x)/2,y=(a.y+b.y)/2;
+  heart(x,y,Math.min(innerWidth*.22,205)+10*Math.sin(now*.004),now);
+  if(now-lastHeart>65){sparkle(x+rand(-140,140),y+rand(-130,130),14,'#ff93c6',2);lastHeart=now;}
+  $('status').textContent=heartEvidence>=850?'🫶 Herz erkannt!':'🫶 Wunderbar! Herz kurz halten …';
+ }
+ if(heartEvidence>=850&&!heartTriggered){
+  heartTriggered=true;
+  $('finale').classList.add('visible');
+  $('status').textContent='🫶 Geschafft! Willkommen an der Oranienschule!';
+ }
+ $('welcome').style.display='none';if(!hasResult && now-lastFrame>1200)$('status').textContent='⏳ Handerkennung startet …';else if(hasResult&&!landmarks.length)$('status').textContent='👋 Bitte Hände vollständig in die Kamera halten';for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=.025*dt;p.life-=dt;ctx.globalAlpha=clamp(p.life/p.max,0,1);ctx.fillStyle=p.color;ctx.shadowColor=p.color;ctx.shadowBlur=12;ctx.beginPath();ctx.arc(p.x,p.y,p.size*clamp(p.life/p.max,.15,1),0,Math.PI*2);ctx.fill();if(p.life<=0)particles.splice(i,1)}ctx.globalAlpha=1;ctx.shadowBlur=0;
+ if(now-lastSend>55&&!busy&&video.readyState>=2&&hands){busy=true;lastSend=now;input.width=640;input.height=Math.max(240,Math.round(640*(video.videoHeight||360)/(video.videoWidth||640)));try{ic.drawImage(video,0,0,input.width,input.height);hands.send({image:input}).catch(e=>{console.warn(e);lastDetectionError=e.message;$('status').textContent='⚠ Handerkennung: '+e.message}).finally(()=>busy=false)}catch(e){busy=false}}
+ loopId=requestAnimationFrame(render)}
+async function begin(){if(playing)return;$('error').style.display='none';$('launch').disabled=true;$('launch').textContent='⏳ Kamera startet …';try{if(!navigator.mediaDevices?.getUserMedia)throw Error('Bitte die Seite über HTTPS oder http://localhost öffnen.');stream=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'user'},width:{ideal:960},height:{ideal:600}}});video.srcObject=stream;await video.play();if(!window.Hands){await new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=CDN+'hands.js';s.onload=resolve;s.onerror=()=>reject(Error('Handerkennung konnte nicht geladen werden. Internetverbindung prüfen.'));document.head.append(s)})}hands=new window.Hands({locateFile:file=>CDN+file});hands.setOptions({maxNumHands:2,modelComplexity:0,minDetectionConfidence:.55,minTrackingConfidence:.5});hands.onResults(r=>{landmarks=r.multiHandLandmarks||[];hasResult=true;lastDetectionAt=performance.now();lastDetectionError='';frames++});resize();playing=true;document.body.classList.add('playing');lastFrame=performance.now();loopId=requestAnimationFrame(render)}catch(e){console.error(e);$('errorText').textContent=e.message||String(e);$('error').style.display='block';document.body.classList.add('playing')}finally{$('launch').disabled=false;$('launch').textContent='✨ Jetzt zaubern!'}}
+function home(){$('finale').classList.remove('visible');playing=false;cancelAnimationFrame(loopId);if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}video.srcObject=null;hands=null;landmarks=[];sc.clearRect(0,0,sharp.width,sharp.height);gesture='none';candidate='none';particles=[];heartUntil=0;heartHold=0;lastHeartSeen=0;heartEvidence=0;heartEvidenceAt=0;heartLastSample=0;heartTriggered=false;document.body.classList.remove('playing');$('error').style.display='none';$('welcome').style.display='none'}
+$('helpToggle').onclick=()=>{showHelp=!showHelp;$('diagnostic').style.display=showHelp?'block':'none';};$('launch').onclick=begin;$('retry').onclick=()=>{home();begin()};$('again').onclick=()=>{$('finale').classList.remove('visible');heartHold=0;lastHeartSeen=0;heartEvidence=0;heartEvidenceAt=0;heartLastSample=0;heartTriggered=false;gesture='none';candidate='none';candidateAt=performance.now()};$('home').onclick=home;addEventListener('pagehide',()=>{if(stream)stream.getTracks().forEach(t=>t.stop())});
+</script></body></html>
